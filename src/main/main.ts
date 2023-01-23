@@ -32,6 +32,7 @@ ipcMain.on('ipc-example', async (event, arg) => {
 });
 
 if (process.env.NODE_ENV === 'production') {
+  // eslint-disable-next-line import/no-unresolved
   const sourceMapSupport = require('source-map-support');
   sourceMapSupport.install();
 }
@@ -71,9 +72,15 @@ const createWindow = async () => {
 
   mainWindow = new BrowserWindow({
     show: false,
-    width: 1024,
-    height: 728,
     icon: getAssetPath('icon.png'),
+    titleBarStyle: 'hidden',
+    transparent: true,
+    minimizable: true,
+    fullscreen: true,
+    titleBarOverlay: {
+      color: '#2f3241',
+      symbolColor: '#74b1be',
+    },
     webPreferences: {
       preload: app.isPackaged
         ? path.join(__dirname, 'preload.js')

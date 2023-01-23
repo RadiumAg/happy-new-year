@@ -1,50 +1,46 @@
-import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
-import icon from '../../assets/icon.svg';
+import { FC, useEffect, useRef } from 'react';
 import './App.css';
 
-const Hello = () => {
+const App: FC = () => {
+  const max = 400;
+  const sectionRef = useRef<HTMLElement | null>();
+
+  function sparkels() {
+    for (let i = 0; i < max; i += 1) {
+      const span = document.createElement('span');
+      const posx = Math.random() * window.innerWidth - 32;
+      const posY = Math.random() * window.innerHeight - 32;
+      const width = Math.random() * 38;
+      const delay = Math.random() * 5;
+      const height = Math.random() * 10;
+
+      span.style.left = `${posx}px`;
+      span.style.top = `${posY}px`;
+      span.style.width = `${width}px`;
+      span.style.height = `${height}px`;
+      span.style.animationDelay = `${delay}s`;
+
+      sectionRef.current?.append(span);
+    }
+  }
+
+  useEffect(() => {
+    sparkels();
+  }, []);
+
   return (
-    <div>
-      <div className="Hello">
-        <img width="200" alt="icon" src={icon} />
+    <section
+      ref={(ref) => {
+        sectionRef.current = ref;
+      }}
+    >
+      <div className="card">
+        <div className="newyear" data-year="2023">
+          <div className="text">新春快乐，兔年吉祥🎆🎆🎆🎆</div>
+        </div>
       </div>
-      <h1>electron-react-boilerplate</h1>
-      <div className="Hello">
-        <a
-          href="https://electron-react-boilerplate.js.org/"
-          target="_blank"
-          rel="noreferrer"
-        >
-          <button type="button">
-            <span role="img" aria-label="books">
-              📚
-            </span>
-            Read our docs
-          </button>
-        </a>
-        <a
-          href="https://github.com/sponsors/electron-react-boilerplate"
-          target="_blank"
-          rel="noreferrer"
-        >
-          <button type="button">
-            <span role="img" aria-label="folded hands">
-              🙏
-            </span>
-            Donate
-          </button>
-        </a>
-      </div>
-    </div>
+    </section>
   );
 };
 
-export default function App() {
-  return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Hello />} />
-      </Routes>
-    </Router>
-  );
-}
+export default App;
